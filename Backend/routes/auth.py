@@ -12,7 +12,7 @@ def register(user: UserCreate):
         raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed_password = hash_password(user.password)
-    create_user(user.email, hashed_password)
+    create_user(user.username,user.email, hashed_password, user.age)
 
     return {"message": "User registered successfully"}
 

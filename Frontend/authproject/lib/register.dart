@@ -18,7 +18,7 @@ class _RegisterState extends State<Register> {
   var ageController = TextEditingController();
 
   void RegisterUser() async {
-    var url = Uri.parse("http://127.0.0.1:8000/auth/register");
+    var url = Uri.parse("http://192.168.1.9:8000/auth/register");
     var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},

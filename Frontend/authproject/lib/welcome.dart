@@ -45,28 +45,64 @@ class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Welcome Page", style: TextStyle(fontSize: 24)),
-          SizedBox(height: 20),
-          if (data != null) ...[
-            Text(
-              "Username: ${data!['username']}",
-              style: TextStyle(fontSize: 18),
-            ),
-            Text("Email: ${data!['email']}", style: TextStyle(fontSize: 18)),
-            Text("Age: ${data!['age']}", style: TextStyle(fontSize: 18)),
-          ] else if (error != null) ...[
-            Text(
-              "Error: $error",
-              style: TextStyle(fontSize: 18, color: Colors.red),
-            ),
-          ] else ...[
-            CircularProgressIndicator(),
-          ],
-        ],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: data != null
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.blue.shade100,
+                      child: Icon(Icons.person, size: 40, color: Colors.blue),
+                    ),
+                    SizedBox(height: 20),
+
+                    Text(
+                      "Welcome",
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    SizedBox(height: 20),
+
+                    Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Username: ${data!['username']}"),
+                            SizedBox(height: 8),
+                            Text("Email: ${data!['email']}"),
+                            SizedBox(height: 8),
+                            Text("Age: ${data!['age']}"),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 30),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("Logout"),
+                    ),
+                  ],
+                )
+              : error != null
+              ? Text(error!, style: TextStyle(color: Colors.red))
+              : CircularProgressIndicator(),
+        ),
       ),
     );
   }

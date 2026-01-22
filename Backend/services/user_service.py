@@ -1,5 +1,5 @@
 from db.database import users_collection
-from core.security import hash_password, verify_password, create_access_token
+from core.security import verify_password
 
 def get_user_by_email(email: str):
     return users_collection.find_one({"email": email})
@@ -18,5 +18,4 @@ def authenticate_user(email: str, password: str):
     user = get_user_by_email(email)
     if not user or not verify_password(password, user["password"]):
         return None
-    token = create_access_token({"sub": str(user["_id"])})
-    return token
+    return user

@@ -31,6 +31,7 @@ class _RegisterState extends State<Register> {
     );
     if (response.statusCode == 200) {
       print("Registration Successful");
+      Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
     } else {
       print("Registration Failed");
     }

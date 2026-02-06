@@ -1,9 +1,16 @@
-from pymongo import MongoClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, declarative_base
 
-MONGO_URL = "mongodb://localhost:27017"
+DATABASE_URL = "postgresql://postgres:steelballrun@localhost:5432/AuthDatabase"
 
-client = MongoClient(MONGO_URL)
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-db = client["FastApiAuthProject"]
+Base = declarative_base()
 
-users_collection = db["users"]
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

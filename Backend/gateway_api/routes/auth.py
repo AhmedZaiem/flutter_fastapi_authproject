@@ -1,0 +1,36 @@
+from fastapi import APIRouter,Request,Response
+import httpx
+
+router = APIRouter()
+
+Auth_SERVICE_URL = "http://localhost:8001"
+
+@router.post("/login")
+async def login(request: Request):
+    body = await request.json()
+    async with httpx.AsyncClient() as client:
+        response = await client.post(f"{Auth_SERVICE_URL}/auth/login", json=body)
+    return response.json()
+
+@router.post("/register")
+async def register(request: Request):
+    body = await request.json()
+    async with httpx.AsyncClient() as client:
+        response = await client.post(f"{Auth_SERVICE_URL}/auth/register", json=body)
+    return response.json()
+
+@router.get("/me")
+async def read_current_user(request: Request):
+    headers = {
+        "Authorization": request.headers.get("Authorization")
+    }
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{Auth_SERVICE_URL}/auth/me", headers=headers)
+    return Response(
+        content=response.content,
+        status_code=response.status_code,
+        media_type="application/json"
+    )
+
+
+

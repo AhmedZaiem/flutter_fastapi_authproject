@@ -33,6 +33,6 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     
     #publish_user_event("LOGIN", db_user)
 
-    access_token = create_access_token(data={"sub": db_user.email})
+    access_token = create_access_token(data={"user_id": db_user.id})
 
     return {"message": "Login successful", "access_token": access_token, "token_type": "bearer"}

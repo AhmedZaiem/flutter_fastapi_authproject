@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from db.database import Base, engine
+from routes.incidentRoute import router
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="Upload Image Service")
 
@@ -11,6 +13,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+app.include_router(router)
 
 Base.metadata.create_all(bind=engine)
 

@@ -1,0 +1,40 @@
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File,Form
+from sqlalchemy.orm import Session
+from db.database import get_db
+from schemas.incidentSchema import IncidentCreate
+from services.IncidentServices import create_incident
+#from core.security import get_current_user
+import os
+import uuid
+
+
+router = APIRouter(prefix="/incidents", tags=["Incidents"])
+
+UPLOAD_FOLDER = "uploads/incidents"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@router.post("/incidents")
+def create_incident_route(
+    description: str = Form(...),
+    type: str = Form(...),
+    location: str = Form(...),
+    region: str = Form(...),
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    ext=image.filename.split(".")[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    file_path = f"{UPLOAD_FOLDER}/{filename}"
+
+    with open(file_path, "wb") as f:
+        f.write(image.file.read())
+
+    incident_data = IncidentCreate(
+        description=description,
+        type=type,
+        location=location,
+        region=region,
+        image_url=file_path
+    )
+
+    return create_incident(db, incident_data)

@@ -1,15 +1,19 @@
 from jose import jwt
 from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends, HTTPException
 
 SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
 
-def get_current_user(token: str):
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: int = payload.get("user_id")
         if user_id is None:
-            raise Exception("Invalid token")
+            raise HTTPException(status_code=401, detail="Invalid token")
         return user_id
     except Exception as e:
-        raise Exception("Could not validate credentials") from e
+        raise HTTPException(status_code=401, detail="Invalid token") from e

@@ -6,4 +6,5 @@ class IncidentCreate(BaseModel):
     location: str
     region: str
     image_url: str
+    user_id: int = Field(default=None)
 

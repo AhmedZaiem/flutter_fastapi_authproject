@@ -19,7 +19,7 @@ class _LoginState extends State<login> {
   final storage = FlutterSecureStorage();
 
   void LoginUser() async {
-    var url = Uri.parse("http://192.168.1.5:8000/auth/login");
+    var url = Uri.parse("http://192.168.1.6:8000/auth/login");
     var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},

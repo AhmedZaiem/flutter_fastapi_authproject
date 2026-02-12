@@ -44,7 +44,7 @@ class _RegisterState extends State<Register> {
       return;
     }
 
-    var url = Uri.parse("http://192.168.1.5:8000/auth/register");
+    var url = Uri.parse("http://192.168.1.6:8000/auth/register");
     var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},

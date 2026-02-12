@@ -1,6 +1,5 @@
 from db.database import get_db
 from models.incident import Incident
-#from core.security import get_current_user
 from sqlalchemy.orm import Session
 
 def create_incident(db: Session, incident_data):
@@ -9,8 +8,8 @@ def create_incident(db: Session, incident_data):
         type=incident_data.type,
         region=incident_data.region,
         location=incident_data.location,
-        photo_url=incident_data.image_url,
-        #user_id=current_user.id
+        image_url=incident_data.image_url,
+        user_id=incident_data.user_id
     )
     db.add(new_incident)
     db.commit()

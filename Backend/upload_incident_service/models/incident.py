@@ -10,11 +10,11 @@ class Incident(Base):
     type = Column(String, nullable=False)
     region = Column(String, nullable=False)
     location = Column(String, nullable=False, default="ras jabel")
-    photo_url = Column(String, nullable=False)
+    image_url = Column(String, nullable=False)
 
     created_at = Column(DateTime, nullable=False, server_default=func.now())
 
-    #user_id = Column(Integer)
+    user_id = Column(Integer)
 
     class config:
         orm_mode = True

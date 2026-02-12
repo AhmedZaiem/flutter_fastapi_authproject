@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from schemas.incidentSchema import IncidentCreate
 from services.IncidentServices import create_incident
-#from core.security import get_current_user
+from core.security import get_current_user
 import os
 import uuid
 
@@ -13,15 +13,17 @@ router = APIRouter(prefix="/incidents", tags=["Incidents"])
 UPLOAD_FOLDER = "uploads/incidents"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-@router.post("/incidents")
+@router.post("/add")
 def create_incident_route(
     description: str = Form(...),
     type: str = Form(...),
     location: str = Form(...),
     region: str = Form(...),
     image: UploadFile = File(...),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user_id= Depends(get_current_user)
 ):
+
     ext=image.filename.split(".")[-1]
     filename = f"{uuid.uuid4()}.{ext}"
     file_path = f"{UPLOAD_FOLDER}/{filename}"
@@ -34,7 +36,8 @@ def create_incident_route(
         type=type,
         location=location,
         region=region,
-        image_url=file_path
+        image_url=file_path,
+        user_id=current_user_id
     )
 
     return create_incident(db, incident_data)

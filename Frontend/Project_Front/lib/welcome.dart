@@ -7,6 +7,8 @@ import 'package:authproject/login.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class Welcome extends StatefulWidget {
   const Welcome({super.key});
@@ -18,6 +20,8 @@ class Welcome extends StatefulWidget {
 class _WelcomeState extends State<Welcome> {
   Map<String, dynamic>? data;
   String? error;
+
+  final String baseUrl = dotenv.env['URL']!;
 
   final storage = FlutterSecureStorage();
 
@@ -45,7 +49,7 @@ class _WelcomeState extends State<Welcome> {
         });
         return;
       }
-      var url = Uri.parse("http://192.168.1.6:8000/auth/me");
+      var url = Uri.parse("$baseUrl/auth/me");
       var response = await http.get(
         url,
         headers: {
@@ -88,7 +92,7 @@ class _WelcomeState extends State<Welcome> {
         return;
       }
 
-      var url = Uri.parse("http://192.168.1.6:8000/incidents/add");
+      var url = Uri.parse("$baseUrl/incidents/add");
       var request = http.MultipartRequest("POST", url);
 
       request.headers["Authorization"] = "Bearer $token";

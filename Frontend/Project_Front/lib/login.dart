@@ -4,6 +4,8 @@ import 'package:authproject/register.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 class login extends StatefulWidget {
   const login({super.key});
@@ -17,9 +19,10 @@ class _LoginState extends State<login> {
   var passwordController = TextEditingController();
 
   final storage = FlutterSecureStorage();
+  final String baseUrl = dotenv.env['URL']!;
 
   void LoginUser() async {
-    var url = Uri.parse("http://192.168.1.6:8000/auth/login");
+    var url = Uri.parse("$baseUrl/auth/login");
     var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},

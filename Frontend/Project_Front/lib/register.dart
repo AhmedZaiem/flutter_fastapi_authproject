@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:authproject/login.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 import 'dart:convert';
 
@@ -16,6 +18,8 @@ class _RegisterState extends State<Register> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var ageController = TextEditingController();
+
+  final String baseUrl = dotenv.env['URL']!;
 
   void RegisterUser() async {
     String username = usernameController.text.trim();
@@ -44,7 +48,7 @@ class _RegisterState extends State<Register> {
       return;
     }
 
-    var url = Uri.parse("http://192.168.1.6:8000/auth/register");
+    var url = Uri.parse("$baseUrl/auth/register");
     var response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},
